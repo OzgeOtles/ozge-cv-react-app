@@ -19,6 +19,7 @@ import {
   faLightbulb,
   faStar,
 } from '@fortawesome/free-solid-svg-icons';
+import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
 
 function App() {
   const [cvData, setCvData] = useState(null);
@@ -230,6 +231,14 @@ function App() {
           </section>
           <footer className="cv-footer">
             <p>© {new Date().getFullYear()} {cvData.name} - All rights reserved.</p>
+            <div className="social-links">
+              <a href="https://tr.linkedin.com/in/ozge-otles-2a6884188" target="_blank" rel="noopener noreferrer">
+                <FontAwesomeIcon icon={faLinkedin} size="2x" />
+              </a>
+              <a href="https://github.com/OzgeOtles" target="_blank" rel="noopener noreferrer">
+                <FontAwesomeIcon icon={faGithub} size="2x" />
+              </a>
+            </div>
           </footer>
         </div>
       ) : (

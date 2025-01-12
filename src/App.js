@@ -1,14 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import {
+  faUser,
+  faGraduationCap,
+  faBriefcase,
+  faCertificate,
+  faCode,
+  faTrophy,
+  faBuilding,
+  faCalendarAlt,
+  faMapMarkerAlt,
+  faPhone,
+  faEnvelope,
+  faKeyboard,
+  faBook,
+  faLightbulb,
+  faStar,
+} from '@fortawesome/free-solid-svg-icons';
 
 function App() {
   const [cvData, setCvData] = useState(null);
 
   useEffect(() => {
-    // CV verisini backend'den al
-    fetch('https://ozgecvproject.onrender.com/api/cv')
-      .then(response => response.json())
-      .then(data => setCvData(data));
+    fetch('http://localhost:3000/api/cv')
+      .then((response) => response.json())
+      .then((data) => setCvData(data));
   }, []);
 
   return (
@@ -17,135 +35,189 @@ function App() {
         <div>
           <header className="cv-header">
             <h1>{cvData.name}</h1>
-            <p><strong>Address:</strong> {cvData.address}</p>
-            <p><strong>Phone:</strong> {cvData.phone} | <strong>Email:</strong> {cvData.email}</p>
+            <p>
+              <strong>{cvData.jobTitle}</strong>
+            </p>
+            <p>
+              <FontAwesomeIcon icon={faMapMarkerAlt} /> {cvData.address} |{' '}
+              <FontAwesomeIcon icon={faPhone} /> {cvData.phone} |{' '}
+              <FontAwesomeIcon icon={faEnvelope} /> {cvData.email}
+            </p>
           </header>
 
-          <div className="cv-section">
-            <h2>Personal Information</h2>
-            <p><strong>Birth Date:</strong> {cvData.personalInformation.birthDate}</p>
-            <p><strong>Birth Place:</strong> {cvData.personalInformation.birthPlace}</p>
-            <p><strong>Nationality:</strong> {cvData.personalInformation.nationality}</p>
-          </div>
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faUser} /> Personal Information
+            </h2>
+            <div>
+              <p>
+                <strong>Profile:</strong> {cvData.profile}
+              </p>
+            </div>
+            <div className="two-column">
+              <p>
+                <strong>Birth Date:</strong> {cvData.personalInformation.birthDate}
+              </p>
+              <p>
+                <strong>Birth Place:</strong> {cvData.personalInformation.birthPlace}
+              </p>
+            </div>
+            <div className="two-column">
+              <p>
+                <strong>Nationality:</strong> {cvData.personalInformation.nationality}
+              </p>
+              <p>
+                <strong>Languages:</strong> {cvData.languages.join(', ')}
+              </p>
+            </div>
+          </section>
 
-          <div className="cv-section">
-            <h2>Profile</h2>
-            <p>{cvData.profile}</p>
-          </div>
-
-          <div className="cv-section">
-            <h2>Languages</h2>
-            <ul className="cv-skills">
-              {cvData.languages.map((lang, index) => (
-                <li key={index}>{lang}</li>
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faGraduationCap} /> Education
+            </h2>
+            <div className="education-grid">
+              {cvData.education.map((edu, index) => (
+                <div className="education-card" key={index}>
+                  <h3 className="education-school">{edu.school}</h3>
+                  {edu.degree && (
+                    <div className="education-degree">
+                      <FontAwesomeIcon icon={faGraduationCap} /> {edu.degree}
+                    </div>
+                  )}
+                  <p className="education-years">
+                    <FontAwesomeIcon icon={faCalendarAlt} /> {edu.startingYear} - {edu.finishingYear}
+                  </p>
+                  <p className="education-gpa">
+                    <FontAwesomeIcon icon={faStar} /> GPA: {edu.gpa}
+                  </p>
+                  {edu.description && (
+                    <div className="education-description">
+                      <strong>{edu.description}</strong>
+                    </div>
+                  )}
+                </div>
               ))}
-            </ul>
-          </div>
+            </div>
+          </section>
 
-          <div className="cv-section">
-            <h2>Education</h2>
-            {cvData.education.map((edu, index) => (
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faBriefcase} /> Experience
+            </h2>
+            <div className="experience-grid">
+              {cvData.experience.map((exp, index) => (
+                <div className="experience-card" key={index}>
+                  <h3 className="experience-title">{exp.jobTitle}</h3>
+                  <p className="experience-company">
+                    <FontAwesomeIcon icon={faBuilding} /> {exp.company}
+                  </p>
+                  <p className="experience-years">
+                    <FontAwesomeIcon icon={faCalendarAlt} /> {exp.years}
+                  </p>
+                  <p className="experience-description">{exp.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faCertificate} /> Certificates
+            </h2>
+            {cvData.certificates.map((cert, index) => (
               <div className="cv-item" key={index}>
-                <h3>{edu.school}</h3>
-                <p><strong>Degree:</strong> {edu.degree} | <strong>GPA:</strong> {edu.gpa}</p>
-                <p><strong>Years:</strong> {edu.startingYear} - {edu.finishingYear}</p>
-                {edu.description && <p>{edu.description}</p>}
-                {edu.scholarship && <p><strong>Scholarship:</strong> {edu.scholarship}</p>}
-                {edu.doubleDegree && <p><strong>Double Degree:</strong> Yes</p>}
+                <h3>{cert.certificatename}</h3>
+                <div className="two-column">
+                  <p>
+                    {cert.firm}
+                  </p>
+                  <p>
+                    <strong>Year:</strong> {cert.year}
+                  </p>
+                </div>
               </div>
             ))}
-          </div>
+          </section>
 
-          <div className="cv-section">
-            <h2>Experience</h2>
-            {cvData.experience.map((exp, index) => (
-              <div className="cv-item" key={index}>
-                <h3>{exp.jobTitle}</h3>
-                <p><strong>Company:</strong> {exp.company}</p>
-                <p><strong>Years:</strong> {exp.years}</p>
-                <p>{exp.description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="cv-section">
-            <h2>Publications</h2>
-            <ul>
-              {cvData.publications.map((pub, index) => (
-                <li key={index}>
-                  {pub.authors}. <strong>{pub.title}</strong>. {pub.journal} ({pub.year}).
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="cv-section">
-            <h2>Achievements</h2>
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faTrophy} /> Achievements
+            </h2>
             <ul>
               {cvData.achievements.map((ach, index) => (
                 <li key={index}>{ach}</li>
               ))}
             </ul>
-          </div>
+          </section>
 
-          <div className="cv-section">
-            <h2>University Activities</h2>
-            <ul>
-              {cvData.universityActivities.map((activity, index) => (
-                <li key={index}>{activity}</li>
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faCode} /> Programming Skills
+            </h2>
+            <ul className="skill-list">
+              {cvData.programmingSkills.map((skill, index) => (
+                <li key={index}>{skill}</li>
               ))}
             </ul>
-          </div>
+          </section>
 
-          <div className="cv-section">
-            <h2>Hobbies</h2>
-            <ul className="cv-skills">
-              {cvData.hobbies.map((hobby, index) => (
-                <li key={index}>{hobby}</li>
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faKeyboard} /> Computer Skills
+            </h2>
+            <ul className="skill-list">
+              {cvData.computerSkills.map((skill, index) => (
+                <li key={index}>{skill}</li>
               ))}
             </ul>
-          </div>
+          </section>
 
-          <div className="cv-section">
-            <h2>Certificates</h2>
-            {cvData.certificates.map((cert, index) => (
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faBook} /> Publications
+            </h2>
+            {cvData.publications.map((pub, index) => (
               <div className="cv-item" key={index}>
-                <h3>{cert.certificatename}</h3>
-                <p><strong>Firm:</strong> {cert.firm} | <strong>Year:</strong> {cert.year}</p>
+                <p>
+                  <strong>{pub.authors}:</strong> "{pub.title}" - {pub.journal} ({pub.year})
+                </p>
               </div>
             ))}
-          </div>
+          </section>
 
-          <div className="cv-section">
-            <h2>Conferences</h2>
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faGraduationCap} /> Conferences
+            </h2>
             <ul>
               {cvData.conferences.map((conf, index) => (
                 <li key={index}>{conf}</li>
               ))}
             </ul>
-          </div>
+          </section>
 
-          <div className="cv-section">
-            <h2>Computer Skills</h2>
-            <ul className="cv-skills">
-              {cvData.computerSkills.map((skill, index) => (
-                <li key={index}>{skill}</li>
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faLightbulb} /> University Activities
+            </h2>
+            <ul>
+              {cvData.universityActivities.map((activity, index) => (
+                <li key={index}>{activity}</li>
               ))}
             </ul>
-          </div>
-
-          <div className="cv-section">
-            <h2>Programming Skills</h2>
-            <ul className="cv-skills">
-              {cvData.programmingSkills.map((skill, index) => (
-                <li key={index}>{skill}</li>
+          </section>
+          
+          <section className="cv-section">
+            <h2>
+              <FontAwesomeIcon icon={faStar} /> Hobbies
+            </h2>
+            <ul>
+              {cvData.hobbies.map((hobby, index) => (
+                <li key={index}>{hobby}</li>
               ))}
             </ul>
-          </div>
-
-          <footer className="cv-footer">
-            <p>© {new Date().getFullYear()} {cvData.name} - All rights reserved.</p>
-          </footer>
+          </section>
         </div>
       ) : (
         <p>Loading...</p>

@@ -228,6 +228,9 @@ function App() {
               ))}
             </ul>
           </section>
+          <footer className="cv-footer">
+            <p>© {new Date().getFullYear()} {cvData.name} - All rights reserved.</p>
+          </footer>
         </div>
       ) : (
         <p>Loading...</p>

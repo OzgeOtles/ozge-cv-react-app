@@ -24,7 +24,7 @@ function App() {
   const [cvData, setCvData] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/cv')
+    fetch('https://ozgecvproject.onrender.com/api/cv')
       .then((response) => response.json())
       .then((data) => setCvData(data));
   }, []);

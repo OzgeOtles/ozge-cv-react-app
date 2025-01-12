@@ -91,6 +91,16 @@ function App() {
                   <p className="education-gpa">
                     <FontAwesomeIcon icon={faStar} /> GPA: {edu.gpa}
                   </p>
+                  {edu.scholarship && (
+                    <p className="education-scholarship">
+                      <strong>Full Scholarship</strong>
+                    </p>
+                  )}
+                  {edu.doubleDegree && (
+                    <p className="education-doubledegree">
+                      <strong>Double Degree</strong>
+                    </p>
+                  )}
                   {edu.description && (
                     <div className="education-description">
                       <strong>{edu.description}</strong>

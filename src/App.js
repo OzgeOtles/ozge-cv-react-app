@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import {
   faUser,
   faGraduationCap,
@@ -17,9 +16,26 @@ import {
   faKeyboard,
   faBook,
   faLightbulb,
-  faStar,
+  faStar
 } from '@fortawesome/free-solid-svg-icons';
+import { faLaptopCode, faMobileAlt, faServer, faFilm, faDatabase, faGlobe } from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
+
+const techIcons = {
+  "C#": faLaptopCode,
+  "HTML": faGlobe,
+  "JavaScript": faLaptopCode,
+  "MySQL": faDatabase,
+  "Git": faGlobe,
+  "CPLEX": faServer,
+  "Unity": faMobileAlt,
+  "Next.js": faGlobe,
+  "Typescript": faLaptopCode,
+  "Mssql": faDatabase,
+  "Jenkins": faServer,
+  "React": faLaptopCode,
+  "Python": faLaptopCode
+};
 
 function App() {
   const [cvData, setCvData] = useState(null);
@@ -77,9 +93,9 @@ function App() {
             <h2>
               <FontAwesomeIcon icon={faGraduationCap} /> Education
             </h2>
-            <div className="education-grid">
+            <div className="experience-grid">
               {cvData.education.map((edu, index) => (
-                <div className="education-card" key={index}>
+                <div className="experience-card" key={index}>
                   <h3 className="education-school">{edu.school}</h3>
                   {edu.degree && (
                     <div className="education-degree">
@@ -218,7 +234,27 @@ function App() {
               ))}
             </ul>
           </section>
-          
+          <section className="cv-section">
+            <h2><FontAwesomeIcon icon={faLaptopCode} style={{ color: '#4c84d4' }} /> Projects</h2>
+            <div className="experience-grid">
+              {cvData.projects.map((project, index) => (
+                <div className="experience-card" key={index}>
+                  <div className="project-header">
+                    <h3 className="experience-title">{project.name}</h3>
+                  </div>
+                  <p className="experience-description">{project.description}</p>
+                  <div className="project-technologies">
+                    {project.technologies.map((tech, i) => (
+                      <span key={i} className="tech-badge">
+                        <FontAwesomeIcon icon={techIcons[tech] || faGlobe} /> {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
           <section className="cv-section">
             <h2>
               <FontAwesomeIcon icon={faStar} /> Hobbies
